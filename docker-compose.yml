@@ -1,0 +1,28 @@
+
+
+services:
+  app:
+    container_name: my_node_app
+    image: node:16
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    ports:
+      - "5000:5000"
+    command: >
+      sh -c "
+      npm install &&
+      node index.js
+      "
+    environment:
+      - REDIS_HOST=redis    
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
+
+  redis:
+    container_name: my_redis
+    image: redis:alpine
+    ports:
+      - "6379:6379"
